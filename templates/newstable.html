@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+     <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+     <link rel = "stylesheet" type = "text/css" href = "/listas.css" />
+     <script>
+     function showContent(id)
+     {
+	var n = document.getElementById(id);
+	if (n.style.display == 'none' || !n.style.display)
+		n.style.display = 'block';
+	else
+		n.style.display='none';
+     }
+    </script>
+  </head>
+	<body>
+		<h1>${title}</h1>
+% for i, art in enumerate(articles):
+			<div class="result">
+				<div class="date">${art.pub_date.strftime("%H:%M %d/%m/%Y")}</div>
+				<div class="feed"><a href="/pyweb/lastByFeed?id=${art.feed.id}">${art.feed.title}</a> </div>
+				<div class="article"><input class="plus_button" type="button" value="+" onclick="showContent('content_${i}');"> <a href = "${art.link}">${art.title}</a></div>
+				<div id="content_${i}" class="content">${art.content}</div>
+			</div>
+% endfor
+	Tiempo query BD: ${db_elapsed} segundos. <br />
+	</body>
+</html>
