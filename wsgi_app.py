@@ -79,9 +79,9 @@ class NewsSearch:
 			
 		return "".join([html, "Render time %s"%delay])
 		
-control_query = ur"""tesauro thesaurus "htc hero" android
- visualizacion visualization infographics mobile portfolio logbook "agent based systems" ia ai "artificial intelligence" clustering tagging enso ubiquity python pys60 analysis design "the secret world" funcom
-"reverse engineering" "machine learning" engineering ingeniería
+control_query = ur"""~tesauro ~thesaurus ~htc ~hero ~android
+ ~visualizacion ~visualization ~infographics ~mobile ~portfolio ~logbook ~agent ~based ~systems" ia ai "artificial intelligence" clustering tagging enso ubiquity python pys60 analysis design "the secret world" funcom
+~reverse ~engineering ~machine ~learning ~engineering ~ingeniería
 """		
 
 class ControlledSearchBackThread(Thread):
