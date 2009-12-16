@@ -57,8 +57,9 @@ def decay(now, post_time):
 	hours = seconds / 3600
 	days = hours / 24
 	weeks = days / 7
+	moths = weeks / 4
 	
-	return seconds > 0 and 1 + seconds**0.1 + 2*hours + days**2 + weeks**6 or 1
+	return seconds > 0 and 1 + 0.2*days + 3*weeks + months**3 or 1
 
 class NewsSearch:
 	def GET(self):
