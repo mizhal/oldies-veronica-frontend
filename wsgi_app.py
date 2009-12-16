@@ -66,7 +66,7 @@ class NewsSearch:
 		res = se.getFromQuery(replace_acute(input.query.decode("utf8")), 0, min(50, int(input.limit)))
 		
 		now = calendar.timegm(datetime.now().timetuple())
-		decay = lambda time: (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+		decay = lambda time: 1# (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
 	
 		results0 = [( a.fitness/decay(a.getFetchUnixTime()), a ) for a in res] 
 		results0.sort()
@@ -96,7 +96,7 @@ class ControlledSearchBackThread(Thread):
 		res = se.getFromQuery(replace_acute(control_query), 0, 10000)
 		
 		now = calendar.timegm(datetime.now().timetuple())
-		decay = lambda time: (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+		decay = lambda time: 1#(now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
 	
 		results0 = [( a.fitness/decay(a.getPubUnixTime()), a ) for a in res] 
 		results0.sort()
@@ -116,7 +116,7 @@ class ControlledSearchBackThread(Thread):
 				res = se.getFromQuery(replace_acute(control_query), 0, 10000)
 			
 				now = calendar.timegm(datetime.now().timetuple())
-				decay = lambda time: (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+				decay = lambda time: 1# (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
 			
 				results0 = [( a.fitness/decay(a.getFetchUnixTime()), a ) for a in res] 
 				results0.sort()
