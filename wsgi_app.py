@@ -52,6 +52,14 @@ from veronica.libveronica.dao.PostgresFeedLoader import PostgresFeedLoader
 
 se = XapianArticleLoader(xapian_news_base, True)
 
+def decay(now, post_time):
+	seconds = now - post_time
+	hours = seconds / 3600
+	days = hours / 24
+	weeks = days / 7
+	
+	return seconds > 0 and 1 + seconds**0.1 + 2*hours + days**2 + weeks**6 or 1
+
 class NewsSearch:
 	def GET(self):
 		return self.do()
@@ -66,9 +74,9 @@ class NewsSearch:
 		res = se.getFromQuery(replace_acute(input.query.decode("utf8")), 0, min(50, int(input.limit)))
 		
 		now = calendar.timegm(datetime.now().timetuple())
-		decay = lambda time: 1# (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+		_decay = lambda time: decay(now, time)
 	
-		results0 = [( a.fitness/decay(a.getFetchUnixTime()), a ) for a in res] 
+		results0 = [( a.fitness/_decay(a.getFetchUnixTime()), a ) for a in res] 
 		results0.sort()
 		results0.reverse()
 		delay = time() - start
@@ -96,9 +104,9 @@ class ControlledSearchBackThread(Thread):
 		res = se.getFromQuery(replace_acute(control_query), 0, 10000)
 		
 		now = calendar.timegm(datetime.now().timetuple())
-		decay = lambda time: 1#(now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+		_decay = lambda time: decay(now, time)
 	
-		results0 = [( a.fitness/decay(a.getPubUnixTime()), a ) for a in res] 
+		results0 = [( a.fitness/_decay(a.getPubUnixTime()), a ) for a in res] 
 		results0.sort()
 		results0.reverse()
 		self.delay = time() - start
@@ -116,9 +124,9 @@ class ControlledSearchBackThread(Thread):
 				res = se.getFromQuery(replace_acute(control_query), 0, 10000)
 			
 				now = calendar.timegm(datetime.now().timetuple())
-				decay = lambda time: 1# (now-time) > 0 and 1 + (now - time)**1.1 + ((now - time)/3600) or 1#funcion de decadencia
+				_decay = lambda time: decay(now, time)
 			
-				results0 = [( a.fitness/decay(a.getFetchUnixTime()), a ) for a in res] 
+				results0 = [( a.fitness/_decay(a.getFetchUnixTime()), a ) for a in res] 
 				results0.sort()
 				results0.reverse()
 				self.delay = time() - start
@@ -132,7 +140,7 @@ class ControlledSearchBackThread(Thread):
 				raise
 			
 			from time import sleep
-			sleep(60) ## @todo ajustar al periodo de entrada de noticias
+			sleep(5*60) ## @todo ajustar al periodo de entrada de noticias
 			
 	def lockResults(self):
 		self.lock.acquire()
