@@ -44,11 +44,19 @@ render = render_mako(
 #########################
 ## Dependencias de la libreria veronica
 #########################
-from veronica.libveronica.utils.html_processing import replace_acute
 from veronica.libveronica.config import xapian_news_base
 from veronica.libveronica.dao.XapianArticleLoader import XapianArticleLoader
 from veronica.libveronica.dao.PostgreSQLArticleLoader import PostgreSQLArticleLoader
 from veronica.libveronica.dao.PostgresFeedLoader import PostgresFeedLoader
+
+def replace_acute(string):
+	st = string.replace(u'\xe1',u'a') 
+	st = st.replace(u'\xe9',u"e") 
+	st = st.replace(u'\xed',u"i") 
+	st = st.replace(u'\xf3',u"o") 
+	st = st.replace(u'\xfa',u"u")
+	st = st.replace(u'\xb4',u"")
+	return st
 
 se = XapianArticleLoader(xapian_news_base, True)
 
@@ -71,8 +79,14 @@ class NewsSearch:
 	def do(self):
 		input = web.input(_unicode=False)
 		
+		try:
+			query = input.query
+			limit = input.limit
+		except:
+			return
+		
 		start = time()
-		res = se.getFromQuery(replace_acute(input.query.decode("utf8")), 0, min(50, int(input.limit)))
+		res = se.getFromQuery(replace_acute(query.decode("utf8")), 0, min(50, int(limit)))
 		
 		now = calendar.timegm(datetime.now().timetuple())
 		_decay = lambda time: decay(now, time)
