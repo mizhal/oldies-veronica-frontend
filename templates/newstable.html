@@ -34,12 +34,8 @@
 		        if (httpRequest.stateChange==4) {
 		
 		            if (httpRequest.status==200) {
-		
-		                if (target=='self') {
-		                    div.innerHTML = httpRequest.responseText;
-		                }
+		                div.innerHTML = httpRequest.responseText;
 		            }
-		
 		        }
 			}
 			httpRequest.open("GET",page, 1)
