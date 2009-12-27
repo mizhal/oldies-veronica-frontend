@@ -39,9 +39,13 @@
 		            	alert(httpRequest.responseText)
 		                destination.innerHTML = httpRequest.responseText;
 		            }
+		            else
+		            {
+		            	alert("error")
+		            }
 		        }
 			}
-			httpRequest.open("GET",page, 1)
+			httpRequest.open("GET",page, true)
 			httpRequest.send()
      }
      
