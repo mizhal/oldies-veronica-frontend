@@ -33,8 +33,9 @@
 			
 			httpRequest.onreadystatechange = function()
 			{
+				alert(" estado " + httpRequest.stateChange)
 		        if (httpRequest.stateChange==4) {
-		
+					
 		            if (httpRequest.status==200) {
 		            	alert(httpRequest.responseText)
 		                destination.innerHTML = httpRequest.responseText;
