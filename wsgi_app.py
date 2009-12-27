@@ -31,6 +31,7 @@ urls = (
 	'/inbox', 'Inbox',
 	'/control', "ControlledSearch",
 	'/similar', 'Similar',
+	'/content', 'Content',
 )
 
 #######################
@@ -98,7 +99,7 @@ class NewsSearch:
 		delay = time() - start
 		
 		st = time()
-		html = render.newstable(title=u"Búsqueda de %s"%input.query.decode("utf8") , articles=[i[1] for i in results0][:int(input.limit)], db_elapsed=delay, start_time=time())
+		html = render.newstable(title=u"Búsqueda de %s"%input.query.decode("utf8") , articles=[i[1] for i in results0][:int(input.limit)], db_elapsed=delay, start_time=time(), nocontent=True)
 		delay = time() - st
 			
 		return "".join([html, "Render time %s"%delay])
@@ -178,7 +179,7 @@ class ControlledSearch:
 		backsearch.lockResults()
 		
 		st = time()
-		html = render.newstable(title=u"Búsqueda controlada" , articles=[i[1] for i in backsearch.results][:50], db_elapsed=backsearch.delay, start_time=time())
+		html = render.newstable(title=u"Búsqueda controlada" , articles=[i[1] for i in backsearch.results][:50], db_elapsed=backsearch.delay, start_time=time(), nocontent=True)
 		delay = time() - st
 		
 		backsearch.releaseResults()
@@ -261,10 +262,21 @@ class Similar:
 		delay = time() - st
 		
 		st = time()
-		html = render.newstable(title=u"Artículos similares a %s"%article.title , articles=articles, db_elapsed=delay, start_time=time())
+		html = render.newstable(title=u"Artículos similares a %s"%article.title , articles=articles, db_elapsed=delay, start_time=time(), nocontent=True)
 		delay = time() - st
 		
 		return "".join([html, "Render time %s"%delay])
+	
+class Content:
+	def GET(self):
+		return self.do()
+
+	def do(self):	
+		input = web.input(_unicode=False)
+		art_id = int(input.id)
+		
+		article = loader.loadById(art_id)
+		return article.content
 
 ##########################
 ## APLICACION

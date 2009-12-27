@@ -5,13 +5,58 @@
      <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
      <link rel = "stylesheet" type = "text/css" href = "/listas.css" />
      <script>
-     function showContent(id)
+     function loadPageToDiv(page, div)
      {
-	var n = document.getElementById(id);
-	if (n.style.display == 'none' || !n.style.display)
-		n.style.display = 'block';
-	else
-		n.style.display='none';
+     		var httpRequest;
+			if (window.XMLHttpRequest)
+			{
+				//El explorador implementa el interfaz de forma nativa
+				httpRequest = new XMLHttpRequest();
+			} 
+			else if (window.ActiveXObject)
+			{
+				//El explorador permite crear objetos ActiveX
+				try {
+					httpRequest = new ActiveXObject("MSXML2.XMLHTTP");
+				} catch (e) {
+					try {
+						httpRequest = new ActiveXObject("Microsoft.XMLHTTP");
+					} catch (e) {}
+				}
+			}
+			if (!httpRequest)
+			{
+				alert("No ha sido posible crear una instancia de XMLHttpRequest");
+			}
+			
+			httpRequest.onreadystatechange = function()
+			{
+		        if (httpRequest.stateChange==4) {
+		
+		            if (httpRequest.status==200) {
+		
+		                if (target=='self') {
+		                    div.innerHTML = httpRequest.responseText;
+		                }
+		            }
+		
+		        }
+			}
+			httpRequest.open(page)
+     }
+     
+     function showContent(id, art_id)
+     {
+     	var n = document.getElementById(id);
+% if nocontent: 
+		n.innerHTML = 'Cargando...'
+		loadPageToDiv("/veronica/content?id=" + art_id)
+% endif
+		if (n.style.display == 'none' || !n.style.display)
+			n.style.display = 'block';
+		else
+			n.style.display='none';
+		
      }
      
      function gotoSimilar(article_id)
@@ -26,7 +71,7 @@
 			<div class="result">
                 <div class="date">${art.pub_date.strftime("%H:%M %d/%m/%Y")}</div>
                 <div class="feed"><a href="/veronica/lastByFeed?id=${art.feed.id}">${art.feed.title}</a> </div>
-                <div class="article"><input class="plus_button" type="button" value="+" onclick="showContent('content_${i}');"><input class="similar_button" type="button" value="~" onclick="gotoSimilar(${art.id});"> <a href = "${art.link}">${art.title}</a></div>
+                <div class="article"><input class="plus_button" type="button" value="+" onclick="showContent('content_${i}', ${art.id});"><input class="similar_button" type="button" value="~" onclick="gotoSimilar(${art.id});"> <a href = "${art.link}">${art.title}</a></div>
                 <div id="content_${i}" class="content">${art.content}</div>
 			</div>
 % endfor
