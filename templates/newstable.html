@@ -29,12 +29,15 @@
 				alert("No ha sido posible crear una instancia de XMLHttpRequest");
 			}
 			
+			var destination = div
+			
 			httpRequest.onreadystatechange = function()
 			{
 		        if (httpRequest.stateChange==4) {
 		
 		            if (httpRequest.status==200) {
-		                div.innerHTML = httpRequest.responseText;
+		            	alert(httpRequest.responseText)
+		                destination.innerHTML = httpRequest.responseText;
 		            }
 		        }
 			}
