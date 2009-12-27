@@ -42,7 +42,8 @@
 		
 		        }
 			}
-			httpRequest.open(page)
+			httpRequest.open("GET",page, 0)
+			httpRequest.send()
      }
      
      function showContent(id, art_id)
