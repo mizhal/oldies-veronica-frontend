@@ -30,6 +30,7 @@ urls = (
 	'/lastByFeed.*','LastByFeed',
 	'/inbox', 'Inbox',
 	'/control', "ControlledSearch",
+	'/similar', 'Similar',
 )
 
 #######################
@@ -228,7 +229,7 @@ class Inbox:
 class LastByFeed:
 	def GET(self):
 		return self.do()
-	
+
 	def do(self):
 		input = web.input(_unicode=False)
 		feed_id = int(input.id)
@@ -241,6 +242,26 @@ class LastByFeed:
 		
 		st = time()
 		html = render.newstable(title=u"Últimas noticias de %s"%feed.title , articles=articles, db_elapsed=delay, start_time=time())
+		delay = time() - st
+		
+		return "".join([html, "Render time %s"%delay])
+	
+class Similar:
+	def GET(self):
+		return self.do()
+
+	def do(self):
+		input = web.input(_unicode=False)
+		art_id = int(input.id)
+		
+		article = loader.loadById(art_id)
+		
+		st = time()
+		articles = se.getSimilarArticles(article, 20)
+		delay = time() - st
+		
+		st = time()
+		html = render.newstable(title=u"Artículos similares a %s"%article.title , articles=articles, db_elapsed=delay, start_time=time())
 		delay = time() - st
 		
 		return "".join([html, "Render time %s"%delay])

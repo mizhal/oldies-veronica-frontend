@@ -13,6 +13,11 @@
 	else
 		n.style.display='none';
      }
+     
+     function gotoSimilar(article_id)
+     {
+     	document.href="/veronica/similar?id=" + article_id
+     }
     </script>
   </head>
 	<body>
@@ -21,7 +26,7 @@
 			<div class="result">
                 <div class="date">${art.pub_date.strftime("%H:%M %d/%m/%Y")}</div>
                 <div class="feed"><a href="/veronica/lastByFeed?id=${art.feed.id}">${art.feed.title}</a> </div>
-                <div class="article"><input class="plus_button" type="button" value="+" onclick="showContent('content_${i}');"> <a href = "${art.link}">${art.title}</a></div>
+                <div class="article"><input class="plus_button" type="button" value="+" onclick="showContent('content_${i}');"><input class="similar_button" type="button" value="~" onclick="gotoSimilar(${art.id});"> <a href = "${art.link}">${art.title}</a></div>
                 <div id="content_${i}" class="content">${art.content}</div>
 			</div>
 % endfor
