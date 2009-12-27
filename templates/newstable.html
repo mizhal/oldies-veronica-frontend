@@ -33,16 +33,14 @@
 			
 			httpRequest.onreadystatechange = function()
 			{
-				alert(" estado " + httpRequest.stateChange)
-		        if (httpRequest.stateChange==4) {
+		        if (httpRequest.readyState==4) {
 					
 		            if (httpRequest.status==200) {
-		            	alert(httpRequest.responseText)
 		                destination.innerHTML = httpRequest.responseText;
 		            }
 		            else
 		            {
-		            	alert("error")
+		            	alert("error de carga de contenido")
 		            }
 		        }
 			}
