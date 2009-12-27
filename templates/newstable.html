@@ -42,7 +42,7 @@
 		
 		        }
 			}
-			httpRequest.open("GET",page, 0)
+			httpRequest.open("GET",page, 1)
 			httpRequest.send()
      }
      
@@ -51,7 +51,7 @@
      	var n = document.getElementById(id);
 % if nocontent: 
 		n.innerHTML = 'Cargando...'
-		loadPageToDiv("/veronica/content?id=" + art_id)
+		loadPageToDiv("/veronica/content?id=" + art_id, n)
 % endif
 		if (n.style.display == 'none' || !n.style.display)
 			n.style.display = 'block';
