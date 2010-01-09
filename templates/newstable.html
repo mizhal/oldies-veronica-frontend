@@ -72,8 +72,31 @@
      {
      	document.location.href="/veronica/similar?id=" + article_id
      }
-     
+    
      // FUNCION TAGGING usando YUI
+     
+     YAHOO.example.Data.tags = [
+		"comics",
+		"juegos",
+		"política",
+		"ingeniería del software",
+		"ciencias de la computación",
+		"ingeniería de computadores",
+		"ingeniería informática",
+		"automática digital",
+		"electrónica",
+		"electricidad de potencia",
+		"electricidad",
+		"proyectos",
+		"cine",
+		"sociedad",
+		"regulación informática",
+		"ingeniería de la web",
+		"telecomunicaciones",
+		"redes"
+	 ];
+     
+     
      YAHOO.example.TagsAlwaysShow = function() {
 	    // Use a LocalDataSource
 	    var oDS = new YAHOO.util.LocalDataSource(YAHOO.example.Data.tags);
