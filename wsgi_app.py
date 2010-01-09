@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 import os
 from os.path import join, dirname
+import re
 
 import calendar
 from datetime import datetime
@@ -32,6 +33,7 @@ urls = (
 	'/control', "ControlledSearch",
 	'/similar', 'Similar',
 	'/content', 'Content',
+	'/tags', 'Tags',
 )
 
 #######################
@@ -277,6 +279,23 @@ class Content:
 		
 		article = loader.loadById(art_id)
 		return article.content
+	
+## TESAURO DE ETIQUETAS
+
+tags = re.split("\s*,\s*", u"""comics,juegos,
+		  política, ingenieria del software,
+		  ciencias de la computación, ingeniería de computadores,
+		  ingeniería informática, automática digital, electrónica,
+		  electricidad de potencia, electricidad, proyectos,
+		  cine,sociedad, regulación informática, ingeniería de la web,
+		  telecomunicaciones,redes""")
+	
+class Tags:
+	def GET(self):
+		return self.do()
+
+	def do(self):	
+		return u",".join(tags) #simplejson.encode(tags)
 
 ##########################
 ## APLICACION

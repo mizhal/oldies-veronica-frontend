@@ -99,7 +99,10 @@
      
      YAHOO.example.TagsAlwaysShow = function() {
 	    // Use a LocalDataSource
-	    var oDS = new YAHOO.util.LocalDataSource(YAHOO.example.Data.tags);
+	    var oDS = new YAHOO.util.XHRDataSource("/veronica/tags");
+	    oDS.responseType = YAHOO.util.DataSource.TYPE_JSON;
+	    oDS.connXhrMode = "queueRequests";
+	    
 	    // Optional to define fields for single-dimensional array
 	    oDS.responseSchema = {fields : ["tag"]};
 	
