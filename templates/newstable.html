@@ -4,6 +4,12 @@
   <head>
      <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
      <link rel = "stylesheet" type = "text/css" href = "/listas.css" />
+     <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/yahoo-dom-event/yahoo-dom-event.js"></script>
+
+	 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/animation/animation-min.js"></script>
+	 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/datasource/datasource-min.js"></script>
+	 <script type="text/javascript" src="http://yui.yahooapis.com/2.8.0r4/build/autocomplete/autocomplete-min.js"></script>
+	     
      <script>
      function loadPageToDiv(page, div)
      {
@@ -66,10 +72,53 @@
      {
      	document.location.href="/veronica/similar?id=" + article_id
      }
+     
+     // FUNCION TAGGING usando YUI
+     YAHOO.example.TagsAlwaysShow = function() {
+	    // Use a LocalDataSource
+	    var oDS = new YAHOO.util.LocalDataSource(YAHOO.example.Data.tags);
+	    // Optional to define fields for single-dimensional array
+	    oDS.responseSchema = {fields : ["tag"]};
+	
+	    // Instantiate the AutoComplete
+	    var oAC = new YAHOO.widget.AutoComplete("myInput", "myContainer", oDS);
+	    oAC.alwaysShowContainer = true;
+	    oAC.minQueryLength = 0; // Can be 0, which will return all results
+	    oAC.maxResultsDisplayed = 100; // Show more results, scrolling is enabled via CSS
+	    oAC.delimChar = [",",";"]; // Enable comma and semi-colon delimiters
+	    oAC.autoHighlight = false; // Auto-highlighting interferes with adding new tags
+	    oAC.sendQuery("");
+	    
+	    // Populate list to start a new interaction
+	    oAC.itemSelectEvent.subscribe(function(sType, aArgs) {
+	        oAC.sendQuery("");
+	    });
+	    
+	    return {
+	        oDS: oDS,
+	        oAC: oAC
+	    };
+	}();
+     
     </script>
+    <style>
+    #myAutoComplete {
+	    width:20em; /* set width here or else widget will expand to fit its container */
+	    padding-bottom:20em; /* allow enough real estate for the container */
+	}
+	.yui-skin-sam .yui-ac-content { /* set scrolling */
+	    max-height:18em;overflow:auto;overflow-x:hidden; /* set scrolling */
+	    _height:18em; /* ie6 */
+	}
+    </style>
   </head>
 	<body>
 		<h1>${title}</h1>
+		<label for="myInput">Assign tags:</label>
+		<div id="myAutoComplete">
+			<input id="myInput" type="text">
+			<div id="myContainer"></div>
+		</div>
 % for i, art in enumerate(articles):
 			<div class="result">
                 <div class="date">${art.pub_date.strftime("%H:%M %d/%m/%Y")}</div>
