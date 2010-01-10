@@ -128,11 +128,11 @@
     </style>
   </head>
 	<body>
-		<h1>${title}</h1>
 		<label for="myInput">Assign tags:</label>
 		<div id="myAutoComplete">
-			<input id="myInput" type="text">
-			<div id="myContainer"></div>
+			<input id="myInput" type="text" />
+			<div id="myACContainer"></div>
+			<input id='object_id' type="hidden" />
 		</div>
 % for i, art in enumerate(articles):
 			<div class="result">
