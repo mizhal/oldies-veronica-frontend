@@ -120,7 +120,7 @@ class ControlledSearchBackThread(Thread):
 		self.delay = 0
 
 		start = time()
-		res = se.getFromQuery(replace_acute(control_query), 0, 10000)
+		res = se.getFromQuery(replace_acute(control_query), 0, 1000)
 		
 		now = calendar.timegm(datetime.now().timetuple())
 		_decay = lambda time: decay(now, time)
@@ -295,7 +295,7 @@ class Tags:
 		return self.do()
 
 	def do(self):	
-		return u",".join(tags) #simplejson.encode(tags)
+		return u",".join(tags).encode('utf8') #simplejson.encode(tags)
 
 ##########################
 ## APLICACION
