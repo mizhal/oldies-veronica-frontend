@@ -290,8 +290,10 @@ tags = re.split("\s*,\s*", u"""comics,juegos,
 		  cine,sociedad, regulación informática, ingeniería de la web,
 		  telecomunicaciones,redes""")
 
+tags.sort()
+
 final = []
-for i, t in enumerate(tags.sort()): 
+for i, t in enumerate(tags): 
 	final.append({"Id":i,"Title":t})
 	
 class Tags:
