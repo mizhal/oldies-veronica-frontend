@@ -295,7 +295,12 @@ class Tags:
 		return self.do()
 
 	def do(self):	
-		return u",".join(tags).encode('utf8') #simplejson.encode(tags)
+		input = web.input(_unicode=False)
+		try:
+			prefix = input.prefix
+			return simplejson.dumps(filter(lambda x: x.startswith(prefix), tags))
+		except:
+			return simplejson.dumps(tags)
 
 ##########################
 ## APLICACION
