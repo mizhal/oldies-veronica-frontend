@@ -289,6 +289,10 @@ tags = re.split("\s*,\s*", u"""comics,juegos,
 		  electricidad de potencia, electricidad, proyectos,
 		  cine,sociedad, regulación informática, ingeniería de la web,
 		  telecomunicaciones,redes""")
+
+final = []
+for i, t in enumerate(tags.sort()): 
+	final.append({"Id":i,"Title":t})
 	
 class Tags:
 	def GET(self):
@@ -298,9 +302,9 @@ class Tags:
 		input = web.input(_unicode=False)
 		try:
 			prefix = input.prefix
-			return simplejson.dumps(filter(lambda x: x.startswith(prefix), tags))
+			return simplejson.dumps({"ResultSet":{"Result":filter(lambda x: x.startswith(prefix), final)}})
 		except:
-			return simplejson.dumps(tags)
+			return simplejson.dumps({"ResultSet":{"Result":final}})
 
 ##########################
 ## APLICACION
